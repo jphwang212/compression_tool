@@ -7,7 +7,11 @@ using namespace std;
 static void readFile(string file) {
     struct stat buffer;
     int code = stat(file.c_str(), &buffer);
-    cout << "Code = " << code;
+    if (code == 0) {
+        cout << "File is valid.\n";
+    } else {
+        cout << "File is NOT valid.\nCode " << code;
+    }
 }
 
 int main() {
