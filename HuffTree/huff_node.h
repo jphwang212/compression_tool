@@ -11,14 +11,15 @@ private:
     Node *right;
 
 public:
-    Node(char ch, int freq);
-    Node(char ch, int freq, Node *left, Node *right);
     bool isLeaf();
     char getElement();
     int getWeight();
     Node *getLeft();
     Node *getRight();
 
+    bool operator>(const Node &other) const {
+        return freq > other.freq;
+    }
     bool operator<(const Node &other) const {
         return freq < other.freq;
     }
