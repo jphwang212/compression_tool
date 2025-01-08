@@ -33,11 +33,34 @@ public:
         return root->getWeight() == (&other)->getWeight() && root->getElement() == (&other)->getWeight();
     }
     Huff_Tree buildTree(vector<Node *> nodes);
+    vector<Huff_Tree> makeHuffVector(vector<Node *> nodes);
 };
 
+vector<Huff_Tree> makeHuffVector(vector<Node *> nodes) {
+    vector<Huff_Tree> huff_vector;
+    Huff_Tree h;
+    for (Node *n : nodes) {
+        h = Huff_Tree(n->getElement(), n->getWeight());
+        huff_vector.push_back(h);
+    }
+    return huff_vector;
+}
+
 Huff_Tree Huff_Tree::buildTree(vector<Node *> nodes) {
+    vector<Huff_Tree> huff_trees = makeHuffVector(nodes);
     Huff_Tree tmp1, tmp2, tmp3;
-    std::sort(nodes.begin(), nodes.end());
-    std::reverse(nodes.begin(), nodes.end());
-    std::make_heap(nodes.begin(), nodes.end(), std::greater<Node>{});
+    std::sort(huff_trees.begin(), huff_trees.end());
+    std::reverse(huff_trees.begin(), huff_trees.end());
+    std::make_heap(huff_trees.begin(), huff_trees.end(), std::greater<Node>{});
+    while (huff_trees.size() > 1) {
+        std::pop_heap(huff_trees.begin(), huff_trees.end());
+        tmp1 = huff_trees.back();
+        huff_trees.pop_back();
+        std::pop_heap(huff_trees.begin(), huff_trees.end());
+        tmp2 = huff_trees.back();
+        huff_trees.pop_back();
+        tmp3 = Huff_Tree(tmp1.root->getElement(), tmp1.root->getWeight());
+        huff_trees.push_back(tmp3);
+    }
+    return tmp3;
 }
