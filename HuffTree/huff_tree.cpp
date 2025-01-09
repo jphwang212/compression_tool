@@ -1,6 +1,6 @@
-#include "huff_leaf_node.cpp";
-#include "huff_node.h";
-#include "huff_parent_node.cpp";
+#include "huff_leaf_node.cpp"
+#include "huff_node.h"
+#include "huff_parent_node.cpp"
 #include <algorithm>
 #include <functional>
 #include <iostream>
@@ -26,32 +26,33 @@ public:
     int getWeight() {
         return root->getWeight();
     }
+    bool operator()(const Huff_Tree &lhs, const Huff_Tree &rhs) const {
+        return lhs.root->getWeight() > rhs.root->getWeight();
+    }
     bool operator<(Huff_Tree &other) const {
         return root->getWeight() < (&other)->getWeight();
     }
     bool operator==(Huff_Tree &other) const {
         return root->getWeight() == (&other)->getWeight() && root->getElement() == (&other)->getWeight();
     }
-    Huff_Tree buildTree(vector<Node *> nodes);
-    vector<Huff_Tree> makeHuffVector(vector<Node *> nodes);
+    Huff_Tree buildTree(vector<Huff_Tree *> nodes);
 };
 
-vector<Huff_Tree> makeHuffVector(vector<Node *> nodes) {
-    vector<Huff_Tree> huff_vector;
-    Huff_Tree h;
-    for (Node *n : nodes) {
-        h = Huff_Tree(n->getElement(), n->getWeight());
-        huff_vector.push_back(h);
-    }
-    return huff_vector;
-}
+// vector<Huff_Tree> makeHuffVector(vector<Node *> nodes) {
+//     vector<Huff_Tree> huff_vector;
+//     Huff_Tree h;
+//     for (Node *n : nodes) {
+//         h = Huff_Tree(n->getElement(), n->getWeight());
+//         huff_vector.push_back(h);
+//     }
+//     return huff_vector;
+// }
 
-Huff_Tree Huff_Tree::buildTree(vector<Node *> nodes) {
-    vector<Huff_Tree> huff_trees = makeHuffVector(nodes);
-    Huff_Tree tmp1, tmp2, tmp3;
+Huff_Tree Huff_Tree::buildTree(vector<Huff_Tree *> huff_trees) {
+    Huff_Tree *tmp1, *tmp2, *tmp3;
     std::sort(huff_trees.begin(), huff_trees.end());
     std::reverse(huff_trees.begin(), huff_trees.end());
-    std::make_heap(huff_trees.begin(), huff_trees.end(), std::greater<Node>{});
+    std::make_heap(huff_trees.begin(), huff_trees.end(), std::greater<Huff_Tree>{});
     while (huff_trees.size() > 1) {
         std::pop_heap(huff_trees.begin(), huff_trees.end());
         tmp1 = huff_trees.back();
@@ -59,8 +60,8 @@ Huff_Tree Huff_Tree::buildTree(vector<Node *> nodes) {
         std::pop_heap(huff_trees.begin(), huff_trees.end());
         tmp2 = huff_trees.back();
         huff_trees.pop_back();
-        tmp3 = Huff_Tree(tmp1.root->getElement(), tmp1.root->getWeight());
+        *tmp3 = Huff_Tree(tmp1->root->getElement(), tmp1->root->getWeight());
         huff_trees.push_back(tmp3);
     }
-    return tmp3;
+    return *tmp3;
 }
