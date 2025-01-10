@@ -54,5 +54,12 @@ int main() {
     readFile("test.txt", &charFrequency);
     printCharFrequency(&charFrequency);
     vector<Huff_Tree *> trees = nodes(charFrequency);
+
+    // TODO
+    /**
+     * @brief
+     * figure out class templates
+     * compile fails possibly due to this
+     */
     return 0;
 }
