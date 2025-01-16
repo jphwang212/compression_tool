@@ -4,23 +4,29 @@
 using namespace Huff_Node;
 using namespace std;
 
-class Huff_Leaf_Node : public Node {
-private:
-    char element;
-    int freq;
+class Huff_LeafNode : public Node {
+    using Node::getElement;
+    using Node::getWeight;
 
 public:
-    Huff_Leaf_Node(char ch, int freq) {
-        element = ch;
-        freq = freq;
-    }
-    bool isLeaf() {
-        return true;
-    }
-    char getElement() {
-        return element;
-    }
-    int getWeight() {
-        return freq;
+    Huff_LeafNode();
+    Huff_LeafNode(char ch, int weight);
+    bool isLeaf();
+    bool operator<(Node *other) const {
+        return this < other;
     }
 };
+
+Huff_LeafNode::Huff_LeafNode() {
+    Node::setElement(NULL);
+    Node::setWeight(NULL);
+}
+
+Huff_LeafNode::Huff_LeafNode(char ch, int weight) {
+    Node::setElement(ch);
+    Node::setWeight(weight);
+}
+
+bool Huff_LeafNode::isLeaf() {
+    return true;
+}

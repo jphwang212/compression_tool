@@ -39,21 +39,33 @@ static void printCharFrequency(unordered_map<char, int> *charFreq) {
     }
 }
 
-static vector<Huff_Tree *> nodes(unordered_map<char, int> charFreq) {
+vector<Huff_Tree *> buildHuffSetup(unordered_map<char, int> *charFreq) {
     vector<Huff_Tree *> nodes;
     Huff_Tree *ht;
-    for (const auto &pair : charFreq) {
+    for (const auto &pair : (*charFreq)) {
         *ht = Huff_Tree(pair.first, pair.second);
         nodes.push_back(ht);
     }
     return nodes;
 }
 
+void destroyTree(Huff_Tree *tree) {
+    if (tree == nullptr) {
+        return;
+    }
+    if (!(tree->Huff_Tree::isLeaf())) {
+        destroyTree(tree->getLeft());
+        destroyTree(tree->getRight());
+    }
+    delete tree;
+}
+
 int main() {
     unordered_map<char, int> charFrequency = unordered_map<char, int>();
     readFile("test.txt", &charFrequency);
     printCharFrequency(&charFrequency);
-    vector<Huff_Tree *> trees = nodes(charFrequency);
+    vector<Huff_Tree *> trees = buildHuffSetup(&charFrequency);
+    destroyTree(trees[0]);
 
     // TODO
     /**

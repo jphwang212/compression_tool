@@ -4,28 +4,32 @@
 using namespace Huff_Node;
 using namespace std;
 
-class Huff_Parent_Node : public Node {
+class Huff_ParentNode : public Node {
 private:
-    int freq;
     Node *left;
     Node *right;
 
 public:
-    Huff_Parent_Node(int freq, Node *left, Node *right) {
-        freq = freq;
-        left = left;
-        right = right;
-    }
-    bool isLeaf() {
-        return false;
-    }
-    int getWeight() {
-        return freq;
-    }
-    Node *getLeft() {
-        return left;
-    }
-    Node *getRight() {
-        return right;
-    }
+    Huff_ParentNode(int freq, Node *left, Node *right);
+    bool isLeaf();
+    Node *getLeft();
+    Node *getRight();
 };
+
+Huff_ParentNode::Huff_ParentNode(int freq, Node *left, Node *right) {
+    freq = freq;
+    left = left;
+    right = right;
+}
+
+bool Huff_ParentNode::isLeaf() {
+    return false;
+}
+
+Node *Huff_ParentNode::getLeft() {
+    return left;
+}
+
+Node *Huff_ParentNode::getRight() {
+    return right;
+}
